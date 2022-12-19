@@ -62,9 +62,9 @@ function isValidDate(dateString) {
 }
 
 /**
- * Parsing dates from Unix format to UTC format
+ * Parses dates from Unix format to UTC format
  * @param dateString
- * @returns the UTC equivalent of the @param
+ * @returns the UTC equivalent of @param
  */
 function parseDateToUTC(dateString) {
 	let parts = dateString.split('-');
@@ -77,6 +77,30 @@ function parseDateToUTC(dateString) {
 	let day = parseDay(new Date(dateString).getDay());
 
 	return day + date + parseMonth(month) + year + ' ' + time;
+}
+
+/**
+ * Parses days input from Number to readable text format
+ * @param dayInput
+ * @returns the short and readable version of @param
+ */
+function parseDay(dayInput) {
+	switch (dayInput) {
+		case 1:
+			return 'Mon, ';
+		case 2:
+			return 'Tue, ';
+		case 3:
+			return 'Wed, ';
+		case 4:
+			return 'Thu, ';
+		case 5:
+			return 'Fri, ';
+		case 6:
+			return 'Sat, ';
+		case 7:
+			return 'Sun, ';
+	}
 }
 
 // listen for requests :)
