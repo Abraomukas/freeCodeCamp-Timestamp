@@ -61,6 +61,24 @@ function isValidDate(dateString) {
 	return day > 0 && day <= monthLength[month - 1];
 }
 
+/**
+ * Parsing dates from Unix format to UTC format
+ * @param dateString
+ * @returns the UTC equivalent of the @param
+ */
+function parseDateToUTC(dateString) {
+	let parts = dateString.split('-');
+
+	const year = parseInt(parts[0]);
+	const month = parseInt(parts[1]);
+	const date = parseInt(parts[2]);
+	const time = '00:00:00 GMT';
+
+	let day = parseDay(new Date(dateString).getDay());
+
+	return day + date + parseMonth(month) + year + ' ' + time;
+}
+
 // listen for requests :)
 var listener = app.listen(process.env.PORT, function () {
 	console.log('Your app is listening on port ' + listener.address().port);
