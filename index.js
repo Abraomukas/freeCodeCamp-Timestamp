@@ -76,12 +76,8 @@ function isValidUnixDate(dateString) {
 	return /^\d{13}$/.test(dateString);
 }
 
-/**
- * Parses dates from Unix format to UTC format
- * @param dateString
- * @returns the UTC equivalent of @param
- */
 function parseDateToUTC(dateString) {
+	// Separate the date parts
 	let parts = dateString.split('-');
 
 	const year = parseInt(parts[0]);
@@ -100,12 +96,17 @@ function parseDateToUTC(dateString) {
  * @returns the Unix equivalent of @param
  */
 function parseDateToUnix(dateString) {
-	let date = new Date(dateString.slice(0, 10) * 1000);
-	let tmp = date.toString().split('+0000');
+	let fullDate = new Date(dateString.slice(0, 10) * 1000);
+	let tmp = fullDate.toString().split('+0000');
+	let toParse = tmp[0].split(' ');
 
-	console.log(tmp[0]);
+	const day = toParse[0];
+	const month = toParse[1];
+	const date = parseInt(toParse[2]);
+	const year = parseInt(toParse[3]);
+	const time = toParse[4] + ' ' + toParse[5];
 
-	return '1';
+	return day + ', ' + date + ' ' + month + ' ' + year + ' ' + time;
 }
 
 /**
