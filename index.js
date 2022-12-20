@@ -26,18 +26,24 @@ app.get('/api/hello', function (req, res) {
 app.get('/api/:date', (req, res) => {
 	let inputDate = req.params.date;
 
-	if (isValidDate(inputDate)) {
+	if (isValidUTCDate(inputDate)) {
 		let unixDate = Math.floor(new Date(inputDate));
 		let utcDate = parseDateToUTC(inputDate);
 
 		res.json({ unix: unixDate, utc: utcDate });
 	}
 
+	if (isValidUnixDate(inputDate)) {
+		let utcDate = parseDateToUnix(inputDate);
+
+		res.json({ unix: +inputDate, utc: utcDate });
+	}
+
 	res.json({ error: 'Invalid Date' });
 });
 
 // Validates that the input string is a valid date formatted as "YYYY-MM-DD"
-function isValidDate(dateString) {
+function isValidUTCDate(dateString) {
 	// First check for the pattern
 	if (!/^\d{4}-\d{1,2}-\d{1,2}$/.test(dateString)) return false;
 
@@ -62,6 +68,15 @@ function isValidDate(dateString) {
 }
 
 /**
+ * Validates that the input string is a valid date in Unix format
+ * @param dateString
+ * @returns true if @param has the correct format
+ */
+function isValidUnixDate(dateString) {
+	return /^\d{13}$/.test(dateString);
+}
+
+/**
  * Parses dates from Unix format to UTC format
  * @param dateString
  * @returns the UTC equivalent of @param
@@ -77,6 +92,20 @@ function parseDateToUTC(dateString) {
 	let day = parseDay(new Date(dateString).getDay());
 
 	return day + date + parseMonth(month) + year + ' ' + time;
+}
+
+/**
+ * Parses dates to Unix format
+ * @param dateString
+ * @returns the Unix equivalent of @param
+ */
+function parseDateToUnix(dateString) {
+	let date = new Date(dateString.slice(0, 10) * 1000);
+	let tmp = date.toString().split('+0000');
+
+	console.log(tmp[0]);
+
+	return '1';
 }
 
 /**
